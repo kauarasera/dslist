@@ -1,6 +1,5 @@
 package com.raserak.dslist.controllers;
 
-import com.raserak.dslist.dto.GameDTO;
 import com.raserak.dslist.dto.GameListDTO;
 import com.raserak.dslist.dto.GameMinDTO;
 import com.raserak.dslist.services.GameListService;
@@ -19,10 +18,17 @@ public class GameListController {
 
     @Autowired
     private GameListService gameListService;
+    @Autowired
+    private GameService gameService;
 
     @GetMapping
     public List<GameListDTO> findAll() {
         List<GameListDTO> result = gameListService.findAll();
         return result;
+    }
+
+    @GetMapping(value = "/{listId}/games") //concatenando o /lists/ id da lista/ e os games
+    public List<GameMinDTO> findByList(@PathVariable Long listId) {
+        return gameService.findByList(listId);
     }
 }

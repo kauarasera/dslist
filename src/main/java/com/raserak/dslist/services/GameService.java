@@ -3,6 +3,7 @@ package com.raserak.dslist.services;
 import com.raserak.dslist.dto.GameDTO;
 import com.raserak.dslist.dto.GameMinDTO;
 import com.raserak.dslist.entities.Game;
+import com.raserak.dslist.projections.GameMinProjection;
 import com.raserak.dslist.repositories.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,14 @@ public class GameService {
     public List<GameMinDTO> findAll() {
         var result = gameRepository.findAll();
         List<GameMinDTO> dto = result.stream().map(x -> new GameMinDTO(x)).toList();
+        return dto;
+    }
+
+    //Consulta que retorna games, por isso está criado aqui
+    @Transactional(readOnly = true)
+    public List<GameMinDTO> findByList(Long listId) {
+        List<GameMinProjection> result = gameRepository.searchByList(listId);
+        List<GameMinDTO> dto = result.stream().map(x -> new GameMinDTO(x)).toList();// concertendo
         return dto;
     }
 }
