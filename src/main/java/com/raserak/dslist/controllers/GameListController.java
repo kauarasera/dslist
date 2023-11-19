@@ -2,13 +2,11 @@ package com.raserak.dslist.controllers;
 
 import com.raserak.dslist.dto.GameListDTO;
 import com.raserak.dslist.dto.GameMinDTO;
+import com.raserak.dslist.dto.ReplacementDTO;
 import com.raserak.dslist.services.GameListService;
 import com.raserak.dslist.services.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,5 +28,14 @@ public class GameListController {
     @GetMapping(value = "/{listId}/games") //concatenando o /lists/ id da lista/ e os games
     public List<GameMinDTO> findByList(@PathVariable Long listId) {
         return gameService.findByList(listId);
+    }
+
+    //Metodo criado para receber o corpo da requisição do reposicionamento
+    @PostMapping(value = "/{listId}/replacement")
+    public void move(
+            @PathVariable Long listId,
+            @RequestBody ReplacementDTO body
+    ) {
+        gameListService.move(listId, body.getSourceIndex(), body.getDestinationIndex());
     }
 }
